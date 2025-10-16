@@ -14,7 +14,11 @@ def update_google_sheet(df: pd.DataFrame):
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/drive"
         ]
-        creds = Credentials.from_service_account_file("config/credentials.json", scopes=scope)
+        # Load credentials securely from Streamlit Secrets
+        creds_dict = json.loads(st.secrets["service_account_json"])
+
+# Create Credentials object from the dictionary
+        creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
         client = gspread.authorize(creds)
 
         # Open existing spreadsheet
